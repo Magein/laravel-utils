@@ -1,11 +1,11 @@
 <?php
 
-namespace Magein\Common\Commands;
+namespace Magein\LaravelUtils\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use magein\tools\common\Variable;
+use Magein\PhpUtils\Variable;
 
 class MakeModelProperty extends Command
 {
@@ -69,7 +69,7 @@ Usage：
 
         //匹配以*结束的通配符
         if (preg_match('/\*$/', $name)) {
-            $dir = Variable::instance()->pascal(substr($name, 0, -1));
+            $dir = Variable::ins()->pascal(substr($name, 0, -1));
             $files = glob("./app/Models/$dir/*.php");
         } else {
             $class_name = $name;
@@ -78,14 +78,14 @@ Usage：
             } elseif (preg_match('/s$/', $class_name)) {
                 $class_name = substr($class_name, 0, -1);
             }
-            $class_name = Variable::instance()->pascal($class_name);
+            $class_name = Variable::ins()->pascal($class_name);
             if ($ignore) {
                 $files = glob("./app/Models/$class_name.php");
             } else {
                 $options = explode('_', $name);
                 $dir = $options[0] ?? '';
                 if ($dir) {
-                    $dir = Variable::instance()->pascal($dir);
+                    $dir = Variable::ins()->pascal($dir);
                     $files = glob("./app/Models/{$dir}/{$class_name}.php");
                 }
             }
@@ -128,9 +128,9 @@ Usage：
                 } elseif ($prefix == '___') {
                     $name = '\Illuminate\Pagination\LengthAwarePaginator';
                 } else {
-                    $name = Variable::instance()->pascal($name);
+                    $name = Variable::ins()->pascal($name);
                 }
-                return '* @method static ' . $name . '|null ' . $prefix . Variable::instance()->camelCase($param) . '($' . $param . ');' . "\n";
+                return '* @method static ' . $name . '|null ' . $prefix . Variable::ins()->camelCase($param) . '($' . $param . ');' . "\n";
             };
 
             if ($attrs) {

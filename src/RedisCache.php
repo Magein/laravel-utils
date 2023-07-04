@@ -1,6 +1,6 @@
 <?php
 
-namespace Magein\Common;
+namespace Magein\LaravelUtils;
 
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Cache;

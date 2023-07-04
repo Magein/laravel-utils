@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Magein\Common\Commands;
+namespace Magein\LaravelUtils\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use magein\tools\common\Variable;
+use Magein\PhpUtils\Variable;
 
 class MakeModelValidator extends Command
 {
@@ -231,7 +231,7 @@ Usage：
             $params = explode('_', $name);
             $dir = $params[0] ?? '';
             if ($dir) {
-                $dir_name = Variable::instance()->pascal($dir);
+                $dir_name = Variable::ins()->pascal($dir);
                 $save_path .= '/' . $dir_name;
                 $namespace = "$namespace\\{$dir_name}";
             }
@@ -249,7 +249,7 @@ Usage：
             $class_name = substr($class_name, 0, -1);
         }
 
-        $class_name = Variable::instance()->pascal($class_name) . 'Request';
+        $class_name = Variable::ins()->pascal($class_name) . 'Request';
 
         $filename = "{$save_path}/{$class_name}.php";
         $rules_str = rtrim($rules_str, "\n");

@@ -1,6 +1,6 @@
 <?php
 
-namespace Magein\Common;
+namespace Magein\LaravelUtils;
 
 use Magein\PhpUtils\Variable;
 

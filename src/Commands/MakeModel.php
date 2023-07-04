@@ -1,11 +1,11 @@
 <?php
 
-namespace Magein\Common\Commands;
+namespace Magein\LaravelUtils\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use magein\tools\common\Variable;
+use Magein\PhpUtils\Variable;
 
 class MakeModel extends Command
 {
@@ -90,11 +90,11 @@ class MakeModel extends Command
         }
 
         if ($dir) {
-            $path = './app/Models/' . Variable::instance()->pascal($dir);
+            $path = './app/Models/' . Variable::ins()->pascal($dir);
             if (!is_dir($path)) {
                 mkdir($path, 757);
             }
-            $namespace .= '\\' . Variable::instance()->pascal($dir);
+            $namespace .= '\\' . Variable::ins()->pascal($dir);
         } else {
             $path = './app/Models';
         }
@@ -106,7 +106,7 @@ class MakeModel extends Command
             $class_name = substr($class_name, 0, -1);
         }
 
-        $class_name = Variable::instance()->pascal($class_name);
+        $class_name = Variable::ins()->pascal($class_name);
         $filename = $path . '/' . $class_name . '.php';
 
         $fillable = "[\n";
@@ -123,7 +123,7 @@ class MakeModel extends Command
         }
         $fillable .= "]";
 
-        $call = function () use ($name, $request,$ignore) {
+        $call = function () use ($name, $request, $ignore) {
             $params = [
                 'name' => $name,
                 '--ignore' => $ignore

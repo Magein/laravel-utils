@@ -1,11 +1,11 @@
 <?php
 
-namespace Magein\Common\Providers;
+namespace Magein\LaravelUtils\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Magein\Common\Commands\MakeModel;
-use Magein\Common\Commands\MakeModelProperty;
-use Magein\Common\Commands\MakeModelValidator;
+use Magein\LaravelUtils\Commands\MakeModel;
+use Magein\LaravelUtils\Commands\MakeModelProperty;
+use Magein\LaravelUtils\Commands\MakeModelValidator;
 
 /**
  * 参考地址 https://learnku.com/laravel/t/35930

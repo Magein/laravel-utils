@@ -1,6 +1,6 @@
 <?php
 
-namespace Magein\Common;
+namespace Magein\LaravelUtils;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
