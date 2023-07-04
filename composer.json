@@ -1,0 +1,30 @@
+{
+  "name": "magein/laravel-utils",
+  "description": "个人开发中常用的laravel工具类",
+  "keywords": [
+    "laravel",
+    "tools"
+  ],
+  "homepage": "https://github.com/magein/laravel-utils",
+  "authors": [
+    {
+      "name": "magein",
+      "homepage": "https://github.com/magein"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.4",
+    "ext-json": "*",
+    "laravel/framework": "^8.54",
+    "magein/php-utils": "*@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Magein\\LaravelUtils\\": "src/"
+    }
+  },
+  "autoload-dev": {},
+  "suggest": {},
+  "extra": {}
+}
