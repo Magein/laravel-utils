@@ -1,6 +1,6 @@
 {
   "name": "magein/laravel-utils",
-  "description": "个人开发中常用的laravel工具类",
+  "description": "个人开发中使用laravel框架常用的工具类",
   "keywords": [
     "laravel",
     "tools"
