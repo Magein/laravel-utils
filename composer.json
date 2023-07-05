@@ -26,5 +26,11 @@
   },
   "autoload-dev": {},
   "suggest": {},
-  "extra": {}
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Magein\\LaravelUtils\\Providers\\HelperServiceProvider"
+      ]
+    }
+  }
 }
