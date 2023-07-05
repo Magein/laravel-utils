@@ -19,7 +19,7 @@ use Magein\PhpUtils\Variable;
  * @method static find($primary_key)
  * @method static pluck($field, $key = '')
  */
-class BaseModel extends Model
+class MainModel extends Model
 {
     use HasFactory;
 
@@ -35,30 +35,41 @@ class BaseModel extends Model
      */
     public static function __callStatic($name, $arguments)
     {
-        if (preg_match('/^_/', $name)) {
-            $underline = strripos($name, '_');
-            $field = substr($name, $underline + 1);
+        preg_match('/^_{1,3}/', $name, $matches);
+
+        $len = strlen($matches[0] ?? '');
+
+        if ($len > 0) {
+            $field = trim(substr($name, $len), '_');
+            $field = Variable::ins()->underline($field);
+
             if (empty($field) || empty($arguments)) {
                 return null;
             }
-            $field = Variable::ins()->underline($field);
             $value = $arguments[0] ?? null;
             if (empty($value)) {
                 return null;
             }
             $params = $arguments[1] ?? [];
             if (!is_array($params)) {
-                return null;
+                $params = [];
             }
+
             $params[$field] = $value;
-            if ($underline === 0) {
+            if ($len === 1) {
                 return static::where($params)->first();
-            } elseif ($underline === 1) {
-                return static::where($params)->get();
-            } elseif ($underline === 2) {
-                $page_size = $params['page_size'] ?? 15;
-                unset($params['page_size']);
+            } elseif ($len === 2) {
+                if (isset($arguments[1]) && is_int($arguments[1])) {
+                    $page_size = $arguments[1];
+                } elseif ($params['page_size'] ?? '') {
+                    $page_size = $params['page_size'];
+                    unset($params['page_size']);
+                } else {
+                    $page_size = request()->input('page_size', 15);
+                }
                 return static::where($params)->paginate($page_size);
+            } elseif ($len === 3) {
+                return static::where($params)->get();
             }
         }
 

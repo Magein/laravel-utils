@@ -1,12 +1,14 @@
 <?php
 
-namespace Magein\LaravelUtils;
+namespace Magein\LaravelUtils\Traits;
 
 use Magein\PhpUtils\Traits\Instance;
 
-class BaseService
+trait Service
 {
     use Instance;
+
+    use Error;
 
     /**
      * @var string[]
@@ -24,11 +26,25 @@ class BaseService
     protected array $where = [];
 
     /**
-     * @return BaseModel
+     * @return MainModel
      */
-    protected function model(): BaseModel
+    protected function model(): MainModel
     {
-        return new BaseModel();
+        return new MainModel();
+    }
+
+    public static function http()
+    {
+        $ins = self::ins();
+        $ins->return_type = 'http';
+        return $ins;
+    }
+
+    public static function normal()
+    {
+        $ins = self::ins();
+        $ins->return_type = 'normal';
+        return $ins;
     }
 
     /**

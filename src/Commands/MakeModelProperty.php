@@ -165,7 +165,7 @@ Usage：
                 }
             }
 
-            if (preg_match('/extends BaseModel/', $content)) {
+            if (preg_match('/extends MainModel/', $content)) {
                 $property .= $methods;
             }
 

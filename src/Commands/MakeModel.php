@@ -10,7 +10,7 @@ use Magein\PhpUtils\Variable;
 class MakeModel extends Command
 {
     /**
-     * 创建的模型会默认继承 BaseModel 可以使用 --extend=laravel
+     * 创建的模型会默认继承 MainModel 可以使用 --extend=laravel
      *
      * 下面命令会创建Models/Member/MemberAuth.php
      * php artisan model:create member_auth
@@ -34,7 +34,7 @@ class MakeModel extends Command
      */
     protected $description = '创建model类 表名称请使用完成的表名称，如members、companies。
  当使用下划线的时候默认会创建二级目录，可以指定--ignore参数取消创建二级目录
- model类默认继承BaseModel，可以指定--extend=laravel继承laravel的EloquentModel
+ model类默认继承MainModel，可以指定--extend=laravel继承laravel的EloquentModel
  ';
 
     public $help = 'Usage example:
@@ -140,8 +140,8 @@ class MakeModel extends Command
             exit();
         }
 
-        $extends = 'BaseModel';
-        $extends_use = 'use Magein\LaravelUtils\BaseModel;';
+        $extends = 'MainModel';
+        $extends_use = 'use Magein\LaravelUtils\MainModel;';
 
         if ($extend === 'laravel') {
             $extends = 'Model';
