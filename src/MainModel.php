@@ -28,6 +28,8 @@ class MainModel extends Model
      */
     protected string $created_at_format = 'Y-m-d H:i';
 
+    protected $page_size = 15;
+
     /**
      * @param $name
      * @param $arguments
@@ -65,7 +67,7 @@ class MainModel extends Model
                     $page_size = $params['page_size'];
                     unset($params['page_size']);
                 } else {
-                    $page_size = request()->input('page_size', 15);
+                    $page_size = request()->input('page_size', (new static())->page_size);
                 }
                 return static::where($params)->paginate($page_size);
             } elseif ($len === 3) {

@@ -124,9 +124,9 @@ Usage：
             $methods .= "\n";
             $method_params = function ($prefix, $name, $param) {
                 if ($prefix == '__') {
-                    $name = '\Illuminate\Database\Eloquent\Collection';
-                } elseif ($prefix == '___') {
                     $name = '\Illuminate\Pagination\LengthAwarePaginator';
+                } elseif ($prefix == '___') {
+                    $name = '\Illuminate\Database\Eloquent\Collection';
                 } else {
                     $name = Variable::ins()->pascal($name);
                 }
