@@ -25,7 +25,7 @@ class MakeModel extends Command
      *
      * @var string
      */
-    protected $signature = 'model:create {name?} {--ignore} {--E|extend=} {--R|request}';
+    protected $signature = 'model:create {name?}  {--l|level} {--e|extend=} {--r|request}';
 
     /**
      * The console command description.
@@ -33,16 +33,19 @@ class MakeModel extends Command
      * @var string
      */
     protected $description = '创建model类 表名称请使用完成的表名称，如members、companies。
- 当使用下划线的时候默认会创建二级目录，可以指定--ignore参数取消创建二级目录
  model类默认继承MainModel，可以指定--extend=laravel继承laravel的EloquentModel
+ -L
+    --level 可以将使用下划线分割创建目录
+ -R
+    --request  创建request参数
  ';
 
     public $help = 'Usage example:
-    php artisan model:create companies                  创建Models/Member/Company.php
-    php artisan model:create member_auths               创建Models/Member/MemberAuth.php
-    php artisan model:create member_auths --ignore      创建Models/MemberAuth.php
-    php artisan model:create member_auths --ignore --extend=laravel     创建Models/MemberAuth.php并且继承laravel的model
-    php artisan model:create member_auth --ignore -E laravel            创建Models/MemberAuth.php并且继承laravel的model
+    php artisan model:create companies                  创建Models/Company.php
+    php artisan model:create member_auths               创建Models/MemberAuth.php
+    php artisan model:create member_auths -L            创建Models/Member/Auth.php
+    php artisan model:create member_auths --level       创建Models/Member/Auth.php
+    php artisan model:create member_auths -E laravel    创建Models/MemberAuth.php并且继承laravel的model
 ';
 
     /**
@@ -57,17 +60,17 @@ class MakeModel extends Command
 
     public function handle()
     {
-        $name = $this->argument('name');
-        $ignore = $this->option('ignore');
+        $table_name = $this->argument('name');
         $extend = $this->option('extend');
         $request = $this->option('request');
+        $level = $this->option('level');
 
-        if (empty($name)) {
+        if (empty($table_name)) {
             $this->info($this->getHelp());
             exit(1);
         }
 
-        $class_name = $name;
+        $class_name = $table_name;
         if (preg_match('/ies$/', $class_name)) {
             $class_name = preg_replace('/ies$/', 'y', $class_name);
         } elseif (preg_match('/s$/', $class_name)) {
@@ -75,18 +78,22 @@ class MakeModel extends Command
         }
 
         try {
-            $attrs = DB::select("show full columns from $name");
+            $attrs = DB::select("show full columns from $table_name");
         } catch (QueryException $queryException) {
-            $this->error('没有检测到表字段信息，请检查表名称');
+            $this->error('没有检测到表字段信息，请检查表名称,输入完整的表名称');
             $this->info($this->getHelp());
             exit(1);
         }
 
         $dir = '';
+        $name = $table_name;
         $namespace = 'namespace App\Models';
-        if (!$ignore) {
+
+        if ($level) {
             $params = explode('_', $name);
-            $dir = $params[0];
+            if (count($params) > 1) {
+                $dir = $params[0];
+            }
         }
 
         if ($dir) {
@@ -123,10 +130,9 @@ class MakeModel extends Command
         }
         $fillable .= "]";
 
-        $call = function () use ($name, $request, $ignore) {
+        $call = function () use ($name, $request) {
             $params = [
-                'name' => $name,
-                '--ignore' => $ignore
+                'name' => $name
             ];
             $this->call('model:property', $params);
             if ($request) {
@@ -157,6 +163,8 @@ $extends_use
 
 class {$class_name} extends $extends
 {
+    protected \$table='$table_name';
+
     protected \$fillable = $fillable;
 }
 EOF;

@@ -15,7 +15,7 @@ class MakeModelProperty extends Command
      *
      * @var string
      */
-    protected $signature = 'model:property {name?} {--ignore}';
+    protected $signature = 'model:property {name?}';
 
     /**
      * The console command description.
@@ -24,15 +24,12 @@ class MakeModelProperty extends Command
      */
     protected $description = 'Models目录下的模型类类都追加上@property 属性名称';
 
-    protected $help = "Notice：
-    参数是数据库的表名称，需要写完整的、正确的表名称
+    protected $help = "
 Usage：
-    php artisan model:property users        识别Models/User.php文件
+    php artisan model:property             识别Models/*.php文件
+    php artisan model:property user        识别Models/User.php文件
     php artisan model:property user*       识别Models/User/*.php文件
-    php artisan model:property companies    识别Models/Company.php文件
-    php artisan model:property company*   识别Models/Company/*.php文件
-    php artisan model:property user_orders  识别Models/User/Order.php文件
-    php artisan model:property user_orders --ignore  识别Models/UserOrder.php文件
+    php artisan model:property user_orders 尝试识别Models/UserOrder.php、Models/User/UserOrder.php、Models/User/Order.php文件
 ";
 
     /**
@@ -59,13 +56,20 @@ Usage：
     public function handle()
     {
         $name = $this->argument('name');
-        $ignore = $this->option('ignore');
 
-        if (empty($name)) {
-            $this->help();
+        $files = glob('./app/Models/*');
+
+        $models = [];
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                $models[] = $file;
+            } elseif (is_dir($file)) {
+
+            }
         }
+        var_dump($models);
+        die();
 
-        $files = [];
 
         //匹配以*结束的通配符
         if (preg_match('/\*$/', $name)) {
@@ -73,23 +77,11 @@ Usage：
             $files = glob("./app/Models/$dir/*.php");
         } else {
             $class_name = $name;
-            if (preg_match('/ies$/', $class_name)) {
-                $class_name = preg_replace('/ies$/', 'y', $class_name);
-            } elseif (preg_match('/s$/', $class_name)) {
-                $class_name = substr($class_name, 0, -1);
-            }
-            $class_name = Variable::ins()->pascal($class_name);
-            if ($ignore) {
-                $files = glob("./app/Models/$class_name.php");
-            } else {
-                $options = explode('_', $name);
-                $dir = $options[0] ?? '';
-                if ($dir) {
-                    $dir = Variable::ins()->pascal($dir);
-                    $files = glob("./app/Models/{$dir}/{$class_name}.php");
-                }
-            }
+            $files = glob("./app/Models/$class_name.php");
         }
+
+        var_dump($files);
+        die();
 
         if (empty($files)) {
             $this->error('没有加载到文件信息，请检查参数');
