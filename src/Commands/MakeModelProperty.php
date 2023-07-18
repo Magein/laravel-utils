@@ -57,10 +57,17 @@ Usage：
     {
         $name = $this->argument('name');
 
-        $filepath = './app/Models';
+        $filepath = './app/Models/';
 
         if ($name) {
-            $filepath = $filepath . '/' . $name . '.php';
+
+            $names = explode('/', $name);
+
+            foreach ($names as $item) {
+                $filepath .= Variable::ins()->pascal($item) . '/';
+            }
+
+            $filepath = trim($filepath, '/') . '.php';
             if (is_file($filepath)) {
                 $files[] = $filepath;
             }
