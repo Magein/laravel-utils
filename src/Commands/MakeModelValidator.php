@@ -17,17 +17,15 @@ class MakeModelValidator extends Command
      *
      * @var string
      */
-    protected $signature = 'model:validate {name?} {--ignore}';
+    protected $signature = 'md:v {name?}';
 
     protected $description = "创建模型的验证类";
 
     protected $help = "Notice：
-    参数是数据库的表名称，需要写完整的、正确的表名称
+    参数是Models下面的文件名称，支持路径形式的
 Usage：
-    php artisan model:validate members  创建Requests/MemberRequest.php
-    php artisan model:validate companies  创建Requests/CompanyRequest.php
-    php artisan model:validate member_orders  创建Requests/Member/MemberOrderRequest.php
-    php artisan model:validate member_orders --ignore  创建Requests/MemberOrderRequest.php";
+    php artisan md:v members             创建Requests/MemberRequest.php
+    ";
 
     private function help()
     {
@@ -38,9 +36,14 @@ Usage：
     public function handle()
     {
         $name = $this->argument('name');
-        $ignore = $this->option('ignore');
         if (empty($name)) {
             $this->help();
+        }
+        $class_name = $name;
+        if (preg_match('/ies$/', $name)) {
+            $class_name = preg_replace('/ies$/', 'y', $name);
+        } elseif (preg_match('/s$/', $name)) {
+            $class_name = substr($name, 0, -1);
         }
 
         $attrs = DB::select("show full columns from $name");
@@ -227,26 +230,9 @@ Usage：
         $save_path = './app/Http/Requests';
         $namespace = 'namespace App\Http\Requests';
 
-        if (!$ignore) {
-            $params = explode('_', $name);
-            $dir = $params[0] ?? '';
-            if ($dir) {
-                $dir_name = Variable::ins()->pascal($dir);
-                $save_path .= '/' . $dir_name;
-                $namespace = "$namespace\\{$dir_name}";
-            }
-        }
-
         if (!is_dir($save_path) && !mkdir($save_path, 0777, true)) {
             $this->error('Error:');
             $this->error("  创建目录失败:$save_path");
-        }
-
-        $class_name = $name;
-        if (preg_match('/ies$/', $class_name)) {
-            $class_name = preg_replace('/ies$/', 'y', $class_name);
-        } elseif (preg_match('/s$/', $class_name)) {
-            $class_name = substr($class_name, 0, -1);
         }
 
         $class_name = Variable::ins()->pascal($class_name) . 'Request';

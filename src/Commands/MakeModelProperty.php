@@ -16,7 +16,7 @@ class MakeModelProperty extends Command
      *
      * @var string
      */
-    protected $signature = 'model:property {name?}';
+    protected $signature = 'md:property {name?}';
 
     /**
      * The console command description.
@@ -27,9 +27,9 @@ class MakeModelProperty extends Command
 
     protected $help = "
 Usage：
-    php artisan model:property             识别Models/*.php文件
-    php artisan model:property user        识别Models/User.php文件
-    php artisan model:property user/order  识别Models/User/order.php文件
+    php artisan md:property             识别Models/*.php文件
+    php artisan md:property user        识别Models/User.php文件
+    php artisan md:property user/order  识别Models/User/order.php文件
 ";
 
     /**

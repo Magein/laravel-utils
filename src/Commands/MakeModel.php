@@ -12,20 +12,20 @@ class MakeModel extends Command
     /**
      * 创建的模型会默认继承 MainModel 可以使用 --extend=laravel
      *
-     * 下面命令会创建Models/Member/MemberAuth.php
-     * php artisan model:create member_auth
+     * php artisan md:create member_auth
+     * 以上命令创建创建Models/MemberAuth.php
      *
-     * 下面命令会创建Models/MemberAuth.php
-     * php artisan model:create member_auth --ignore
+     * php artisan md:create member_auth  --extend=laravel
+     * php artisan md:create member_auth  -e laravel
+     * 以上命令创建创建Models/MemberAuth.php并且继承Illuminate\Database\Eloquent\Model
      *
-     * 下面命令会创建Models/MemberAuth.php并且继承laravel的model
-     * php artisan model:create member_auth --ignore --extend=laravel
-     * php artisan model:create member_auth --ignore -E laravel
+     * php artisan md:create member_auth  -l
+     * 以上命令创建创建Models/Member/MemberAuth.php
      *
      *
      * @var string
      */
-    protected $signature = 'model:create {name?}  {--l|level} {--e|extend=} {--r|request}';
+    protected $signature = 'md:create {name?}  {--l|level} {--e|extend=} {--r|request}';
 
     /**
      * The console command description.
@@ -41,11 +41,12 @@ class MakeModel extends Command
  ';
 
     public $help = 'Usage example:
-    php artisan model:create companies                  创建Models/Company.php
-    php artisan model:create member_auths               创建Models/MemberAuth.php
-    php artisan model:create member_auths -L            创建Models/Member/Auth.php
-    php artisan model:create member_auths --level       创建Models/Member/Auth.php
-    php artisan model:create member_auths -E laravel    创建Models/MemberAuth.php并且继承laravel的model
+    php artisan md:create users                      创建Models/User.php
+    php artisan md:create user_orders                创建Models/UserOrder.php
+    php artisan md:create user_orders -l             创建Models/User/UserOrder.php
+    php artisan md:create user_orders --level        创建Models/User/UserOrder.php
+    php artisan md:create user_orders -e laravel     创建Models/UserOrder.php并且继承laravel的model
+    php artisan md:create user_orders -r             创建Http/Requests/UserOrderRequest.php
 ';
 
     /**
@@ -139,9 +140,9 @@ class MakeModel extends Command
             $params = [
                 'name' => $name
             ];
-            $this->call('model:property', $params);
+            $this->call('md:property', $params);
             if ($request) {
-                $this->call('model:validate', $params);
+                $this->call('md:v', $params);
             }
         };
 
@@ -158,6 +159,7 @@ class MakeModel extends Command
             $extends = 'Model';
             $extends_use = 'use Illuminate\Database\Eloquent\Model;';
         }
+
 
         $content = <<<EOF
 <?php
