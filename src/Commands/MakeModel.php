@@ -130,7 +130,12 @@ class MakeModel extends Command
         }
         $fillable .= "]";
 
-        $call = function () use ($name, $request) {
+        $call = function () use ($name, $request, $dir) {
+
+            if ($dir) {
+                $name = Variable::ins()->pascal($dir) . '/' . Variable::ins()->pascal($name);
+            }
+
             $params = [
                 'name' => $name
             ];

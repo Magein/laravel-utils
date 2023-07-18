@@ -29,8 +29,7 @@ class MakeModelProperty extends Command
 Usage：
     php artisan model:property             识别Models/*.php文件
     php artisan model:property user        识别Models/User.php文件
-    php artisan model:property user*       识别Models/User/*.php文件
-    php artisan model:property user_orders 尝试识别Models/UserOrder.php、Models/User/UserOrder.php、Models/User/Order.php文件
+    php artisan model:property user/order  识别Models/User/order.php文件
 ";
 
     /**
@@ -58,25 +57,20 @@ Usage：
     {
         $name = $this->argument('name');
 
-        $files = $models = File::ins()->getTreeList('./app/Models');
+        $filepath = './app/Models';
 
-        var_dump($files);
-        die();
-
-        //匹配以*结束的通配符
-        if (preg_match('/\*$/', $name)) {
-            $dir = Variable::ins()->pascal(substr($name, 0, -1));
-            $files = glob("./app/Models/$dir/*.php");
+        if ($name) {
+            $filepath = $filepath . '/' . $name . '.php';
+            if (is_file($filepath)) {
+                $files[] = $filepath;
+            }
         } else {
-            $class_name = $name;
-            $files = glob("./app/Models/$class_name.php");
+            $result = File::ins()->getTreeList($filepath, ['php']);
+            $files = $result->getData();
         }
 
-        var_dump($files);
-        die();
-
         if (empty($files)) {
-            $this->error('没有加载到文件信息，请检查参数');
+            $this->error($filepath . '目录下没有模型文件');
             $this->help();
             exit();
         }
@@ -128,14 +122,14 @@ Usage：
                         continue;
                     }
 
-                    $var = 'string';
+                    $type = 'string';
                     if (preg_match('/int/', $type)) {
-                        $var = 'integer';
+                        $type = 'integer';
                     } elseif (preg_match('/decimal/', $type)) {
-                        $var = 'float';
+                        $type = 'float';
                     }
 
-                    $property .= " * @property $var $" . $field;
+                    $property .= " * @property $type $" . $field;
                     $property .= "\n";
 
                     if (preg_match('/_id|_no|phone|email$/', $field) || $key) {
@@ -152,8 +146,8 @@ Usage：
             if (preg_match('/extends MainModel/', $content)) {
                 $property .= $methods;
             }
-
-            $property .= " */";
+            $property = trim($property, "\n");
+            $property .= "\n */";
 
             // 替换属性
             $filename = pathinfo($path, PATHINFO_FILENAME);
@@ -161,6 +155,5 @@ Usage：
             file_put_contents($path, $content);
             $this->info('success file: ' . $path);
         }
-
     }
 }
