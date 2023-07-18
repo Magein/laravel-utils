@@ -26,7 +26,7 @@ class MainModel extends Model
     /**
      * @var string
      */
-    protected string $created_at_format = 'Y-m-d H:i';
+    protected $created_at_format = 'Y-m-d H:i';
 
     protected $page_size = 15;
 
