@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38f29db776042529f39ded4273e4ec47",
+    "content-hash": "2bd4d61af768ce2371e0772cf86afb9d",
     "packages": [
         {
             "name": "brick/math",
@@ -1072,28 +1072,27 @@
         },
         {
             "name": "magein/php-utils",
-            "version": "dev-master",
+            "version": "0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Magein/php-utils.git",
-                "reference": "1ec0185ad8decfd5a27299ec9a1dc03d4d6fe91c"
+                "reference": "c1ccafc6f12d2519c5ee0603e16436c11c0574dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Magein/php-utils/zipball/1ec0185ad8decfd5a27299ec9a1dc03d4d6fe91c",
-                "reference": "1ec0185ad8decfd5a27299ec9a1dc03d4d6fe91c",
+                "url": "https://api.github.com/repos/Magein/php-utils/zipball/c1ccafc6f12d2519c5ee0603e16436c11c0574dd",
+                "reference": "c1ccafc6f12d2519c5ee0603e16436c11c0574dd",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "php": "^7.4"
+                "php": "^7.1"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Magein\\Traits\\": "src/"
+                    "Magein\\PhpUtils\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1114,9 +1113,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Magein/php-utils/issues",
-                "source": "https://github.com/Magein/php-utils/tree/master"
+                "source": "https://github.com/Magein/php-utils/tree/0.0.2"
             },
-            "time": "2023-07-04T08:50:27+00:00"
+            "time": "2023-07-18T07:25:44+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4549,9 +4548,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "magein/php-utils": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

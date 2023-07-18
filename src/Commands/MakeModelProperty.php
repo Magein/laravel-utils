@@ -5,6 +5,7 @@ namespace Magein\LaravelUtils\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Magein\PhpUtils\File;
 use Magein\PhpUtils\Variable;
 
 class MakeModelProperty extends Command
@@ -57,19 +58,10 @@ Usage：
     {
         $name = $this->argument('name');
 
-        $files = glob('./app/Models/*');
+        $files = $models = File::ins()->getTreeList('./app/Models');
 
-        $models = [];
-        foreach ($files as $file) {
-            if (is_file($file)) {
-                $models[] = $file;
-            } elseif (is_dir($file)) {
-
-            }
-        }
-        var_dump($models);
+        var_dump($files);
         die();
-
 
         //匹配以*结束的通配符
         if (preg_match('/\*$/', $name)) {
